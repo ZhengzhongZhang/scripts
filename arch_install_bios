@@ -1,0 +1,21 @@
+parted /dev/sda -s 'mklabel msdos'
+parted /dev/sda -s 'mkpart primary 1m 100%'
+parted /dev/sda -s 'set 1 boot on'
+mkfs.ext4 /dev/sda1
+
+mount /dev/sda1 /mnt
+
+echo -e "\n" | pacstrap -i /mnt base grub os-prober
+genfstab -p /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+arch-chroot /mnt locale-gen
+echo LANG=en_US.UTF-8 > /mnt/etc/locale.conf
+arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+arch-chroot /mnt hwclock -wu
+echo archlinux > /mnt/etc/hostname
+arch-chroot /mnt passwd
+arch-chroot /mnt grub-install --recheck /dev/sda
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.config
+arch-chroot /mnt systemctl enable dhcpcd.service
+

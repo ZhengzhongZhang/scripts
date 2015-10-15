@@ -1,0 +1,31 @@
+parted /dev/sda -s 'mklabel gpt'
+parted /dev/sda -s 'mkpart esp 1m 513m'
+parted /dev/sda -s 'set 1 boot on'
+parted /dev/sda -s 'mkpart primary 513m 100%'
+mkfs.vfat -F 32 /dev/sda1
+mkfs.ext4 /dev/sda2
+
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+
+echo -e "\n" | pacstrap -i /mnt base
+genfstab -p /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+arch-chroot /mnt locale-gen
+echo LANG=en_US.UTF-8 > /mnt/etc/locale.conf
+arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+arch-chroot /mnt hwclock -wu
+echo archlinux > /mnt/etc/hostname
+arch-chroot /mnt passwd
+arch-chroot /mnt bootctl --path=/boot install
+cat > /mnt/boot/loader/entries/arch.conf <<-ARCH
+title	Arch Linux
+linux	/vmlinuz-linux
+initrd	/initramfs-linux.img
+options	root=/dev/sda2 rw
+ARCH
+echo default	arch> /mnt/boot/loader/loader.conf
+arch-chroot /mnt systemctl enable dhcpcd.service
+
