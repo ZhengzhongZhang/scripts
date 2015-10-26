@@ -10,22 +10,23 @@ mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 
 echo -e "\n" | pacstrap -i /mnt base
-genfstab -p /mnt >> /mnt/etc/fstab
+genfstab -U -p /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
-arch-chroot /mnt locale-gen
-echo LANG=en_US.UTF-8 > /mnt/etc/locale.conf
-arch-chroot /mnt ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-arch-chroot /mnt hwclock -wu
-echo archlinux > /mnt/etc/hostname
-arch-chroot /mnt passwd
-arch-chroot /mnt bootctl --path=/boot install
-cat > /mnt/boot/loader/entries/arch.conf <<-ARCH
+arch-chroot /mnt /bin/bash -c'
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock -wu
+echo archlinux > /etc/hostname
+echo vagrant | passwd --stdin
+bootctl --path=/boot install
+cat > /boot/loader/entries/arch.conf <<-ARCH
 title	Arch Linux
 linux	/vmlinuz-linux
 initrd	/initramfs-linux.img
 options	root=/dev/sda2 rw
 ARCH
-echo default	arch> /mnt/boot/loader/loader.conf
-arch-chroot /mnt systemctl enable dhcpcd.service
-
+echo default	arch> /boot/loader/loader.conf
+systemctl enable dhcpcd.service
+'
