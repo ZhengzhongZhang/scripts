@@ -12,14 +12,14 @@ mount /dev/sda1 /mnt/boot
 echo -e "\n" | pacstrap -i /mnt base
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt /bin/bash -c'
+arch-chroot /mnt /bin/bash -c '
 sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 echo LANG=en_US.UTF-8 > /etc/locale.conf
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock -wu
 echo archlinux > /etc/hostname
-echo vagrant | passwd --stdin
+passwd
 bootctl --path=/boot install
 cat > /boot/loader/entries/arch.conf <<-ARCH
 title	Arch Linux
