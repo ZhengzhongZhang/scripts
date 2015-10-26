@@ -1,0 +1,11 @@
+useradd -m vagrant
+set root&vagrant password to 'vagrant'
+
+passwd vagrant virtualbox-guest-utils-nox virtualbox-guest-dkms
+systemctl enable {vboxservice, dkms}
+
+pacman -Syu openssh
+mitchellh/vagrant/tree/master/keys ~/.ssh/authorized_keys
+chmod 700 600
+visudo vagrant to no password
+UseDNS no
