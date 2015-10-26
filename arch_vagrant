@@ -1,11 +1,16 @@
 useradd -m vagrant
-set root&vagrant password to 'vagrant'
+passwd vagrant
+groupadd sudo
+gpasswd sudo -a vagrant
+visudo
 
-passwd vagrant virtualbox-guest-utils-nox virtualbox-guest-dkms
-systemctl enable {vboxservice, dkms}
+yes | pacman -Syu --needed openssh virtualbox-guest-utils-nox virtualbox-guest-dkms
+systemctl enable sshd vboxservice dkms
 
-pacman -Syu openssh
-mitchellh/vagrant/tree/master/keys ~/.ssh/authorized_keys
-chmod 700 600
-visudo vagrant to no password
-UseDNS no
+# ssh settings
+mkdir -p /home/vagrant/.ssh
+curl https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub > /home/vagrant/.ssh/authorized_keys
+chmod 0700 /home/vagrant/.ssh
+chmod 0600 /home/vagrant/.ssh/authorized_keys
+chown -R vagrant /home/vagrant/.ssh
+sudo sed -i 's/#UseDNS/UseDNS/' /etc/ssh/sshd_config
