@@ -29,4 +29,7 @@ ARCH
 echo default	arch> /boot/loader/loader.conf
 systemctl enable dhcpcd.service
 '
-echo 'run "arch-chroot /mnt passwd" manually to set password for root user'
+echo '
+======================================
+to set password for root user
+run "arch-chroot /mnt passwd" manually'
