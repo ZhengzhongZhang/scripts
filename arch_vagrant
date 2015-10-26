@@ -1,4 +1,4 @@
-yes | pacman -Syu --needed openssh virtualbox-guest-utils-nox virtualbox-guest-dkms sudo
+yes | pacman -Syu --needed openssh virtualbox-guest-utils-nox virtualbox-guest-dkms linux-headers sudo
 systemctl enable sshd vboxservice dkms
 
 useradd -m vagrant
