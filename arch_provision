@@ -2,36 +2,28 @@
 sudo sed -i 's/#Color/Color/' /etc/pacman.conf
 
 yes | sudo pacman -Syu
-yes | sudo pacman -S --needed git vim zsh tmux
-sudo ln -sf ./vim /usr/bin/vi
+yes | sudo pacman -S --needed git neovim zsh tmux
 
 #clone dotfiles
 if [[ ! -d ~/.dotfiles ]]; then
   git clone git://github.com/ZhengzhongZhang/dotfiles ~/.dotfiles
 fi
-ln -sf .dotfiles/vimrc ~/.vimrc
-ln -sf .dotfiles/gitconfig ~/.gitconfig
-curl https://raw.githubusercontent.com/tony/tmux-config/master/.tmux.conf > ~/.tmux.conf
+if [[ ! -d ~/.tmux.conf ]]; then
+    curl https://raw.githubusercontent.com/tony/tmux-config/master/.tmux.conf > ~/.tmux.conf
+fi
 
-#install Vundle and Plugins
-if [[ ! -d ~/.vim/bundle/Vundle.vim/ ]]; then
-  git clone git://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+#install vim-plug and Plugins
+if [[ ! -d ~/.config/nvim/autoload/plug.vim/ ]]; then
+  curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   sed -i 's/colorscheme/"colorscheme/' ~/.vimrc
-  vim < /dev/tty +PluginInstall +qall
+  vim < /dev/tty +PlugInstall +qall
   sed -i 's/"colorscheme/colorscheme/' ~/.vimrc
 fi
 
 #install prezto
 if [[ ! -d ~/.zprezto ]]; then
   git clone --recursive git://github.com/ZhengzhongZhang/prezto.git "$HOME/.zprezto"
-  # git clone git://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
-  # cd ~/.zprezto
-  # git submodule update --init --recursive \
-  #   modules/history-substring-search/external \
-  #   modules/syntax-highlighting/external \
-  #   modules/completion/external
-  # cd ~
-  # rm ~/.zprezto/modules/prompt/functions/{async,prompt_agnoster_setup,prompt_powerline_setup,prompt_pure_setup}
 
   zsh -c '
   setopt EXTENDED_GLOB
