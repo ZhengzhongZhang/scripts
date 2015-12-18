@@ -1,7 +1,7 @@
 #
 # NJU portal login script
 #
-cachefile=$HOME/.cache/portal/.passphrase
+cachefile=$HOME/.cache/.portal
 
 login() {
     if [[ -f $cachefile ]]; then
