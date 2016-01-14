@@ -1,15 +1,14 @@
-#enable pacman color
+# vim: set ft=sh :
+# enable pacman colors
 sudo sed -i 's/#Color/Color/' /etc/pacman.conf
 
 yes | sudo pacman -Syu
-yes | sudo pacman -S --needed git neovim zsh tmux
+yes | sudo pacman -S --needed git neovim zsh tmux stow
 
 #clone dotfiles
 if [[ ! -d ~/.dotfiles ]]; then
   git clone git://github.com/ZhengzhongZhang/dotfiles ~/.dotfiles
-  ln -s ~/.dotfiles/nvim/init.vim ~/.config/nvim/init.vim
-  ln -s ~/.dotfiles/git/config ~/.config/git/config
-  ln -s ~/.dotfiles/tmux.conf ~/.tmux.conf
+  (cd ~/.dotfiles && for D in */; do stow $D; done)
 fi
 
 #install vim-plug
