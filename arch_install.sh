@@ -56,5 +56,7 @@ root    ALL=(ALL) ALL
 %wheel  ALL=(ALL) NOPASSWD: ALL
 %sudo   ALL=(ALL) ALL
 EOF
+# add sudo group
+groupadd sudo
 
 ENDCHROOT
