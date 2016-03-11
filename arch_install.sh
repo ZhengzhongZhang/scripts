@@ -30,15 +30,15 @@ bootctl --path=/boot install
 
 # boot entry
 cat > /boot/loader/entries/arch.conf <<-ARCH
-title	Arch Linux
-linux	/vmlinuz-linux
-initrd	/initramfs-linux.img
-options	root=/dev/sda2 rw
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=/dev/sda2 rw
 ARCH
 
 # boot default entry
 cat > /boot/loader/loader.conf <<-DEFAULT
-default	arch
+default arch
 DEFAULT
 
 # enable dhcp
