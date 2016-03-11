@@ -16,3 +16,8 @@ chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant:vagrant /home/vagrant/.ssh
 sed -i 's/#UseDNS/UseDNS/' /etc/ssh/sshd_config
 
+# clean up
+unset HISTFILE
+[ -f /root/.bash_history ] && rm /root/.bash_history
+find /var/log -type f | while read f; do echo -ne '' > $f; done;
+yes | pacman -Scc
