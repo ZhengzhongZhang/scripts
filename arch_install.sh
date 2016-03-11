@@ -9,7 +9,7 @@ mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 
-pacstrap /mnt base --needed
+pacstrap /mnt base base-devel --needed
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt <<-ENDCHROOT
@@ -48,6 +48,13 @@ systemctl enable dhcpcd.service
 passwd<<EOF
 vagrant
 vagrant
+EOF
+
+# sudo setup
+cat > /etc/sudoers <<-EOF
+root    ALL=(ALL) ALL
+%wheel  ALL=(ALL) NOPASSWD: ALL
+%sudo   ALL=(ALL) ALL
 EOF
 
 ENDCHROOT
