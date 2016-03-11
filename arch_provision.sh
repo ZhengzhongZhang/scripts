@@ -1,9 +1,7 @@
-# vim: set ft=sh :
 # enable pacman colors
 sudo sed -i 's/#Color/Color/' /etc/pacman.conf
 
-yes | sudo pacman -Syu
-yes | sudo pacman -S --needed git neovim zsh tmux stow
+yes | sudo pacman -Syu --needed git neovim zsh tmux stow
 
 #clone dotfiles
 if [[ ! -d ~/.dotfiles ]]; then
