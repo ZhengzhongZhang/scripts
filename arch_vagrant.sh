@@ -1,6 +1,7 @@
 yes | pacman -Syu --needed openssh virtualbox-guest-utils-nox virtualbox-guest-dkms linux-headers sudo
 systemctl enable sshd vboxservice
 
+# add user vagrant
 useradd -G wheel,vboxsf -m vagrant
 passwd -d vagrant
 passwd vagrant <<-EOF

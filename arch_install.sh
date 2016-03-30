@@ -9,6 +9,10 @@ mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 
+sed -i 's/#Color/Color/' /etc/pacman.conf
+sed -i '6 i Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
+pacman -Syy
+
 pacstrap /mnt base base-devel --needed
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
@@ -56,6 +60,7 @@ root    ALL=(ALL) ALL
 %wheel  ALL=(ALL) NOPASSWD: ALL
 %sudo   ALL=(ALL) ALL
 EOF
+
 # add sudo group
 groupadd sudo
 
