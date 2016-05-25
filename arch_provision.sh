@@ -1,7 +1,7 @@
 # enable pacman colors
 sudo sed -i 's/#Color/Color/' /etc/pacman.conf
 
-yes | sudo pacman -Syu --needed git neovim zsh tmux stow
+yes | sudo pacman -Syu --needed git hub neovim zsh tmux stow
 
 #clone dotfiles
 if [[ ! -d ~/.dotfiles ]]; then
