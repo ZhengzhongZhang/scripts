@@ -5,7 +5,7 @@ yes | sudo pacman -Syu --needed git hub neovim zsh tmux stow
 
 #clone dotfiles
 if [[ ! -d ~/.dotfiles ]]; then
-  git clone git://github.com/ZhengzhongZhang/dotfiles ~/.dotfiles
+  git clone git://github.com/jankjn/dotfiles ~/.dotfiles
   (cd ~/.dotfiles && for D in */; do stow $D; done)
 fi
 
@@ -17,7 +17,7 @@ fi
 
 #install prezto
 if [[ ! -d ~/.zprezto ]]; then
-  git clone --recursive git://github.com/ZhengzhongZhang/prezto.git "$HOME/.zprezto"
+  git clone --recursive git://github.com/jankjn/prezto.git "$HOME/.zprezto"
 
   zsh -c '
   setopt EXTENDED_GLOB
